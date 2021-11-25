@@ -1,78 +1,66 @@
 package com.LabProject;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.Map;
+
 public class Location {
-    public final String EAST = "East";
 
-    public final String WEST = "West";
-    public final String SOUTH = "South";
-    public final String NORTH = "North";
-    private String currentLocation = "Foyer";
+	public final int locationId;
+	private final String description;
+	private final Map<String, Integer> moves;
+	private List<String> inventory;
 
+	public Location(int locationId, String description, ArrayList<String> inventory) {
+		this.locationId = locationId;
+		this.description = description;
+		this.moves = new HashMap<>();
+		this.moves.put("Quit", -1);
+		this.inventory = inventory;
+	}
 
-    public String getCurrentLocation() {
-        return currentLocation;
-    }
+	// get the location id
+	public int getLocation() {
+		return locationId;
+	}
 
-    public void setCurrentLocation(String currentLocation) {
-        this.currentLocation = currentLocation;
+	// Get description of location
+	public String getDescription() {
+		return description;
+	}
 
-    }
+	// Add a direction to the map
+	public void addDirection(String direction, int location) {
+		moves.put(direction, location);
+	}
 
+	public Map<String, Integer> getMoves() {
+		return new HashMap<String, Integer>(moves);
+	}
 
+	// get all the players items
+	public String getAllItems() {
+		StringBuilder returnString = new StringBuilder();
+		ListIterator<String> itemsIterator = inventory.listIterator();
+		while (itemsIterator.hasNext()) {
+			returnString.append(itemsIterator.next());
+			if (itemsIterator.hasNext()) {
+				returnString.append(", ");
+			}
 
-    public void move(String direction) {
-        System.out.println("You're moving from the [" + currentLocation + "] in the following direction: [" + direction + "]");
+		}
+		return returnString.toString();
+	}
 
-        switch (currentLocation) {
-            case "Foyer" -> handleFoyerMove(direction);
-            case "Kitchen" -> handleKitchenMove(direction);
-            case "Attic" -> handleAtticMove(direction);
-            case "Basement" -> handleBasementMove(direction);
-        }
+	public void lootItems(ArrayList<String> playerInv) {
+		ListIterator<String> planetInvIt = inventory.listIterator();
+		while (planetInvIt.hasNext()) {
+			playerInv.add(planetInvIt.next());
+			planetInvIt.remove();
+		}
 
-    }
-
-
-
-    //state ( location ) has been updated
-    public void handleFoyerMove(String direction) {
-
-        if(direction.equals(EAST))
-            setCurrentLocation("Kitchen");
-        else
-            System.out.println(" cant get there from here...  ");
-
-
-
-
-    }
-
-    public void handleKitchenMove(String direction) {
-
-        switch (direction) {
-            case SOUTH -> setCurrentLocation("Basement");
-            case WEST -> setCurrentLocation("Foyer");
-            case NORTH -> setCurrentLocation("Attic");
-            default -> System.out.println("Cant get there from here");
-        }
-
-
-    }
-
-
-    public void handleBasementMove(String direction){
-        if(direction.equals(NORTH))
-            setCurrentLocation("Kitchen");
-        else
-            System.out.println("Cant get there from here");
-    }
-
-    public void handleAtticMove(String direction){
-        if(direction.equals(SOUTH))
-            setCurrentLocation("Kitchen");
-        else
-            System.out.println("Cant get there from here");
-    }
+	}
 
 }
-

@@ -1,16 +1,12 @@
 package com.LabProject;
 
 public class Help {
-    private final String[] Commands;
 
-    Help(){
-        this.Commands = new String[]{"East", "West", "South", "North"};
-    }
+	public static void helpMenu() {
+		System.out.println("Remember:\nYou need 50 points or more to win\n");
+		System.out.println("To take an item when available type:\nLoot\n");
+		System.out.println("To move to a new location type either: \nNorth South East or West\n");
+	}
 
-    public void printCommands(){
-        System.out.println("Here are all available commands for you to type:");
-        for (String command: Commands ){
-            System.out.println(command);
-        }
-    }
+
 }
